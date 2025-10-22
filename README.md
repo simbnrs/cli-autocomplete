@@ -5,6 +5,7 @@ A simple Python CLI application that provides autocomplete suggestions while you
 ## Features
 
 - **Real-time autocomplete**: See suggestions as you type
+- **Custom delimiters**: Use `;` and `|` as word separators instead of whitespace
 - **Case-insensitive matching**: Type in any case and get suggestions
 - **Clipboard integration**: Press Enter to copy your selection to the clipboard
 - **Easy exit**: Type `!q` to quit the application
@@ -48,11 +49,13 @@ uv run python main.py
 ### Instructions
 
 1. Start typing a programming language name
-2. Use arrow keys to navigate suggestions (if multiple matches)
-3. Press Tab or Right Arrow to accept the current suggestion
-4. Press Enter to copy the completed word to your clipboard
-5. Type `!q` to exit the application
-6. Or press Ctrl+C or Ctrl+D to exit
+2. Use `;` or `|` as delimiters to separate multiple words
+3. Autocomplete works after each delimiter
+4. Use arrow keys to navigate suggestions (if multiple matches)
+5. Press Tab or Right Arrow to accept the current suggestion
+6. Press Enter to copy the entire line to your clipboard
+7. Type `!q` to exit the application
+8. Or press Ctrl+C or Ctrl+D to exit
 
 ## Example
 
@@ -61,14 +64,24 @@ uv run python main.py
 Autocomplete CLI
 ==================================================
 Type to see autocomplete suggestions
+Use ';' or '|' as delimiters between words
 Press ENTER to copy the suggestion to clipboard
 Type '!q' to quit
 ==================================================
 
 Type here: pyt  # As you type "pyt", "Python" appears as suggestion
+Type here: Python;java  # After delimiter ';', typing "java" suggests "JavaScript"
+Type here: Python;JavaScript|rust  # Works with '|' delimiter too, suggesting "Rust"
 ```
 
-When you press Enter, the word will be copied to your clipboard.
+When you press Enter, the entire line will be copied to your clipboard.
+
+## Custom Delimiters
+
+This app uses custom delimiters (`;` and `|`) instead of whitespace. This means:
+- You can include spaces in your input without triggering a new completion
+- Only `;` and `|` characters will start a new autocomplete context
+- Example: `Python ; Java | TypeScript` will autocomplete three separate words
 
 ## Requirements
 
