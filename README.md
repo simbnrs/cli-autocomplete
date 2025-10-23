@@ -1,12 +1,13 @@
 # CLI Autocomplete
 
-A simple Python CLI application that provides autocomplete suggestions while you type, based on a predefined list of programming language names.
+A Python CLI application that provides autocomplete suggestions powered by Meilisearch. Type words with custom delimiters and get intelligent, fast autocomplete suggestions.
 
 ## Features
 
+- **Meilisearch-powered autocomplete**: Lightning-fast search with typo tolerance
+- **Top 5 results**: Get the 5 most relevant suggestions for your query
 - **Real-time autocomplete**: See suggestions as you type
 - **Custom delimiters**: Use `;` and `|` as word separators instead of whitespace
-- **Case-insensitive matching**: Type in any case and get suggestions
 - **Clipboard integration**: Press Enter to copy your selection to the clipboard
 - **Easy exit**: Type `!q` to quit the application
 
@@ -38,6 +39,41 @@ Then install the dependencies:
 uv sync
 ```
 
+## Meilisearch Setup
+
+This application requires Meilisearch to be running. Meilisearch is a powerful, fast, open-source search engine.
+
+### Option 1: Using Docker (Recommended)
+
+```bash
+# Run Meilisearch in a Docker container
+docker run -d -p 7700:7700 getmeili/meilisearch:latest
+
+# Verify it's running
+curl http://127.0.0.1:7700/health
+```
+
+### Option 2: Local Installation
+
+Download and install Meilisearch from [meilisearch.com](https://www.meilisearch.com/docs/learn/getting_started/quick_start):
+
+```bash
+# macOS
+brew install meilisearch
+
+# Linux (using curl)
+curl -L https://install.meilisearch.com | sh
+
+# Start Meilisearch
+meilisearch
+```
+
+The application will automatically:
+1. Connect to Meilisearch at `http://127.0.0.1:7700`
+2. Create an index called "words"
+3. Index all the programming language names
+4. Use prefix search with a limit of 5 results
+
 ## Usage
 
 Run the application:
@@ -61,20 +97,23 @@ uv run python main.py
 
 ```
 ==================================================
-Autocomplete CLI
+Autocomplete CLI (Powered by Meilisearch)
 ==================================================
+✓ Meilisearch initialized with 10 words
 Type to see autocomplete suggestions
 Use ';' or '|' as delimiters between words
 Press ENTER to copy the suggestion to clipboard
 Type '!q' to quit
 ==================================================
 
-Type here: pyt  # As you type "pyt", "Python" appears as suggestion
-Type here: Python;java  # After delimiter ';', typing "java" suggests "JavaScript"
-Type here: Python;JavaScript|rust  # Works with '|' delimiter too, suggesting "Rust"
+Type here: pyt  # Meilisearch returns top 5 matches, "Python" appears
+Type here: Python;java  # After ';', typing "java" suggests "JavaScript", "Java"
+Type here: Python;JavaScript|rus  # After '|', suggests "Rust"
 ```
 
 When you press Enter, the entire line will be copied to your clipboard.
+
+**Note**: Meilisearch provides intelligent search with typo tolerance, so even if you mistype, you'll still get relevant suggestions!
 
 ## Custom Delimiters
 
@@ -85,9 +124,16 @@ This app uses custom delimiters (`;` and `|`) instead of whitespace. This means:
 
 ## Requirements
 
+### Software
 - Python 3.11+
+- Meilisearch (running locally or via Docker)
+
+### Python Packages
+- meilisearch
 - prompt-toolkit
 - pyperclip
+
+All Python dependencies are automatically installed via `uv sync`.
 
 ## License
 
